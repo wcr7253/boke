@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.example.boke.Dao.CommentMapper">
+ 
+	<insert id="savecomment" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.boke.entity.Comment" >
+		 INSERT INTO `comment`
+	        ( `nickname`, `email`, `content`, `avatarId`, `createTime`, `blogId`, `commentId`,`isAdmintor`) 
+	  	VALUES(#{nickname}, #{email}, #{content}, #{avatarId}, #{createTime}, #{blogId}, #{commentId},#{isAdmintor}) 
+	</insert>
+	
+	<select id="listcomment"  resultType="com.example.boke.entity.Comment">
+		SELECT * FROM `comment` where blogId=#{blogId} and commentId = -1  ORDER BY createTime DESC
+	</select>
+	
+	<select id="getCommentName"  resultType="java.lang.String">
+		SELECT `nickname` FROM `comment` where id=#{id} 
+	</select>
+	
+</mapper>

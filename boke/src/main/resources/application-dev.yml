@@ -1,0 +1,35 @@
+server:
+  port: 80
+  servlet:
+    context-path: /boke
+    
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    username: root
+    password: a1b2c3
+    url: jdbc:mysql://127.0.0.1:3306/wcr_boke?useUnicode=true&characterEncoding=UTF-8&userSSL=false&serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    database: 0
+    host: 175.24.78.152
+    part: 6379
+    password: 200724a.
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
+ 
+    
+mybatis:
+  mapper-locations: classpath:mapping/*Mapping.xml
+ 
+#showSql
+logging:
+  level:
+    com:
+      example:
+        mapper : debug

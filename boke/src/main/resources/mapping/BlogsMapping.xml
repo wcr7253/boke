@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.example.boke.Dao.BlogMapper">
+ 
+	<select id="listBlogs" parameterType="hashmap"  resultType="com.example.boke.entity.Blog">
+		SELECT * FROM `blog`  where 1=1
+		<if test="titleForSearch != null">
+		  AND title LIKE '%${titleForSearch}%'  
+	    </if>
+		<if test="typeId != null" >
+		    AND typeId = #{typeId}
+		</if>
+		<if test="isPublished != null" >
+		    AND isPublished = #{isPublished}
+		</if>
+		<if test="typeId != null" >
+		    AND typeId = #{typeId}
+		</if>
+		LIMIT #{startIndex},#{pageSize}
+	</select>
+	
+	<insert id="saveblogs" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.boke.entity.Blog" >
+		 INSERT INTO `blog`
+	        ( `title`, `content`, `firstPictureId`, `flag`, `views`, `isAppreciation`, `isShareStatrment`, `isCommentabled`, `isRecommand`, `isPublished`, `creatTime`, `updataTime`, `typeId`, `userId`, `description`) 
+	 	 VALUES(#{title}, #{content}, #{firstPictureId}, #{flag}, #{views}, #{isAppreciation}, #{isShareStatrment}, #{isCommentabled}, #{isRecommand}, #{isPublished}, #{creatTime}, #{updataTime}, #{typeId}, #{userId},#{description}) 
+	</insert>
+	
+ 	<select id="getBlogs"  resultType="com.example.boke.entity.Blog">
+		SELECT * FROM `blog`  where id= #{blogId} 
+	</select>
+	
+	<select id="getBlogsForP"  resultType="com.example.boke.entity.Blog">
+		SELECT * FROM `blog`  where id= #{blogId} and isPublished=1 
+	</select>
+	
+	<select id="listType"  resultType="com.example.boke.entity.Blog">
+		SELECT * FROM `blog` where typeId=#{typeId} 
+	</select>
+	
+	<delete id="delBlog">
+		DELETE  FROM `blog` where id = #{id}
+	</delete>
+	
+</mapper>

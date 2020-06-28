@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.8">
+
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+
+		<title>博客发布</title>
+		<script th:src="@{/js/jquery.min.js}"></script>
+		<script th:src="@{/js/afquery.js}"></script>
+		<link rel="stylesheet" th:href="@{/css/common.css}" media="all">
+		<link rel="stylesheet" th:href="@{/lib/editormd/css/editormd.css}">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+		<link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+	</head>
+	<body>
+		<!--导航-->
+		<nav class="ui inverted attached segment m-padded-tb-min m-shadow-small">
+			<div class="ui container">
+				<div class="ui inverted secondary stackable menu">
+					<h2 class="ui teal header item">管理后台</h2>
+					<a th:href='@{/boke/admin/blogs}' class="active m-item item m-mobile-hide"><i class="home icon"></i>博客</a>
+					<a th:href='@{/boke/admin/types}' class=" m-item item m-mobile-hide"><i class="idea icon"></i>分类</a>
+					<a th:href='@{/boke/admin/tags}' class="m-item item m-mobile-hide"><i class="tags icon"></i>标签</a>
+					<div class="right m-item m-mobile-hide menu">
+						<div class="ui dropdown item">
+							<div class="text">
+								<img class="ui avatar image" th:src="@{/image/tou.png}">
+								<span> [[${session.user.nickname}]]</span>
+							</div>
+							<i class="dropdown icon"></i>
+							<div class="menu">
+								<a th:href='@{/boke/admin/loginout}' class="item">注销</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+				<i class="sidebar icon"></i>
+			</a>
+		</nav>
+		<div class="ui attached pointing menu">
+			<div class="ui  container">
+				<div class="right menu">
+					<a th:href='@{/boke/admin/blogsinput}' class="active teal item">发布</a>
+					<a th:href='@{/boke/admin/blogs}' class="  item">列表</a>
+				</div>
+			</div>
+		</div>
+		<!--中间内容-->
+		<div class="m-container-small m-padded-tb-big">
+			<div class="ui container">
+				<form action="#" method="Post" class="ui form">
+					<div class="required field">
+						<div class="ui left labeled input">
+							<div class="ui  selection compact teal basic dropdown label">
+								<input type="hidden" name="flag" />
+								<i class="dropdown icon"></i>
+								<div class="text">原创</div>
+								<div class="menu">
+									<div class="item" data-value="原创">原创</div>
+									<div class="item" data-value="转载">转载</div>
+									<div class="item" data-value="翻译">翻译</div>
+								</div>
+							</div>
+							<input type="text" name="title" placeholder="标题" />
+						</div>
+					</div>
+
+					<div class="field">
+						<div id="md-content" style="z-index: 1 !important;">
+							<textarea placeholder="博客内容" name="content" style="display: none;">
+
+							</textarea>
+						</div>
+					</div>
+
+					<div class="two fields">
+						<div class="field">
+							<div class="ui left labeled actions input">
+								<label class="ui compact teal basic label">分类</label>
+								<div class="ui fluid selection dropdown">
+									<input type="hidden" name="typeId" />
+									<i class="dropdown icon"></i>
+									<div class="default text">分类</div>
+									<div class="menu">
+										<div th:each=" row:${typesList}" class="item" th:data-value=" ${row.id}" th:text=" ${row.name}">错误日志</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="field">
+							<div class="ui left labeled actions input">
+								<label class="ui compact teal basic label">标签</label>
+								<div class="ui fluid selection multiple search  dropdown">
+									<input type="hidden" name="tagId" />
+									<i class="dropdown icon"></i>
+									<div class="default text">标签</div>
+									<div class="menu">
+										<div th:each=" row:${tagsList}" class="item" th:data-value=" ${row.id}" th:text=" ${row.name}">错误日志</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="required field">
+						<div class="ui left labeled input">
+							<div class="layui-upload">
+								<button type="button" class="layui-btn" id="updatephoto" value="上传图片">上传图片</button>
+								<div class="layui-upload-list">
+									<img class="layui-upload-img" id="demo1" width="100">
+									<p id="demoText"></p>
+									<label id="photoId"></label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="required field">
+						<textarea name="description" placeholder="博客描述..." maxlength="200"></textarea>
+					</div>
+
+					<div class="inline fields">
+						<div class="field">
+							<div class="ui checkbox">
+								<input type="checkbox" id="recommand" name="recommand" class="hidden" />
+								<label for="recommand">推荐</label>
+							</div>
+						</div>
+						<div class="field">
+							<div class="ui checkbox">
+								<input type="checkbox" id="shareInfo" name="shareInfo" class="hidden" />
+								<label for="shareInfo">转载声明</label>
+							</div>
+						</div>
+						<div class="field">
+							<div class="ui checkbox">
+								<input type="checkbox" id="appreciation" name="appreciation" class="hidden" />
+								<label for="appreciation">赞赏</label>
+							</div>
+						</div>
+						<div class="field">
+							<div class="ui checkbox">
+								<input type="checkbox" id="comment" name="comment" class="hidden" />
+								<label for="comment">评论</label>
+							</div>
+						</div>
+					</div>
+					<div class="ui right aligned container">
+						<button type="button" class="ui button" onclick="window.history.go(-1)">返回</button>
+						<button type="button" class="ui secondary button" onclick='my.save()'>保存</button>
+						<button type="button" class="ui teal button" onclick='my.Published()'>发布</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!--底部-->
+		<footer class="ui inverted vertical segment m-padded-tb-massive">
+			<div class="ui  center aligned container">
+				<div class="ui inverted divided stackable grid">
+					<div class="three wide column">
+						<div class="ui inverted link list">
+							<div class="item">
+								<img th:src="@{/image/weiChat.JPG}" class="ui rounded image" alt="" style="width: 110px !important;" />
+							</div>
+						</div>
+					</div>
+					<div class="three wide column">
+						<h4 class="ui inverted header m-text-thin m-text-spaced ">最新博客</h4>
+						<div class="ui inverted link list" th:each=" row:${newSmallBlogList}">
+							<a th:href='@{/boke/user/blog(blogId=${row.id})}' class="item" th:text=" ${row.title}">我爱的猪猪</a>
+						</div>
+					</div>
+					<div class="three wide column">
+						<h4 class="ui inverted header m-text-thin m-text-spaced ">联系我</h4>
+						<div class="ui inverted link list">
+							<a href="#" class="item">Email:725322259@qq.com</a>
+							<a href="#" class="item">CellPhone:15696798858</a>
+							<a href="#" class="item">QQ:725322259</a>
+						</div>
+					</div>
+					<div class="seven wide column">
+						<h4 class="ui inverted header m-text-thin m-text-spaced ">王朝锐的个人博客</h4>
+						<p class="m-text-thin m-text-spaced m-opacity-mini">这是我的个人博客。用来分析源码，学习心得和交流，希望可以帮助别人.......</p>
+					</div>
+				</div>
+				<div class="ui inverted section divider"></div>
+				<div style="color: #F08047;margin-top: -18px" class="ui inverted m-text-thin m-text-spaced">当前时间：<span id="start"
+					 class="item m-text-thin"></span> (*๓´╰╯`๓)</div>
+			</div>
+
+		</footer>
+
+		<script th:src="@{/lib/editormd/editormd.min.js}" type="text/javascript"></script>
+		<script th:src="@{/layui/layui.js}" type="text/javascript"></script>
+		<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+		<script>
+			$(function() {
+				var t = null;
+				t = setTimeout(time, 1000); //開始运行
+				function time() {
+					clearTimeout(t); //清除定时器
+					dt = new Date();
+					var year = dt.getFullYear();
+					var month = dt.getMonth() + 1; //(0-11,0代表1月)
+					var date = dt.getDate(); //获取天
+					var num = dt.getDay(); //获取星期
+					var weekday = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+					var hour = dt.getHours(); //获取时
+					var minute = dt.getMinutes(); //获取分
+					var second = dt.getSeconds(); //获取秒
+					//分秒时间是一位数字，在数字前补0。
+					date = extra(date);
+					month = extra(month);
+					minute = extra(minute);
+					second = extra(second);
+					document.getElementById("start").innerHTML = year + " 年 " + month + " 月 " + date + " 日 " + hour + "：" + minute +
+						"：" + second + " " + weekday[num];
+					t = setTimeout(time, 1000); //设定定时器，循环运行
+				}
+			});
+			//补位函数。
+			function extra(x) {
+				//如果传入数字小于10，数字前补一位0。
+				if (x < 10) {
+					return "0" + x;
+				} else {
+					return x;
+				}
+			}
+
+			//初始化MarkDown编辑器
+			var contentEditor;
+			$(function() {
+				contentEditor = editormd("md-content", {
+					width: "100%",
+					height: 640,
+					syncScrolling: "single",
+					path: "../../lib/editormd/lib/"
+				});
+			});
+
+			$('.menu.toggle').click(function() {
+				$('.m-item').toggleClass('m-mobile-hide');
+			});
+
+			$('.ui.dropdown').dropdown({
+				on: 'hover'
+			});
+
+
+
+			layui.use('upload', function() {
+				var $ = layui.jquery,
+					upload = layui.upload;
+
+				//普通图片上传
+				var uploadInst = upload.render({
+					elem: '#updatephoto',
+					url: "../../photo/upload.do" //改成您自己的上传接口
+						,
+					before: function(obj) {
+						//预读本地文件示例，不支持ie8
+						obj.preview(function(index, file, result) {
+							$('#demo1').attr('src', result); //图片链接（base64）
+						});
+					},
+					done: function(res) {
+						var data = res.data
+						//如果上传失败
+						if (res.code > 0) {
+							return layer.msg('上传失败');
+						} else {
+							$("#photoId").html(data.PhotoId);
+						}
+						//上传成功
+					},
+					error: function() {
+						//演示失败状态，并实现重传
+						var demoText = $('#demoText');
+						demoText.html(
+							'<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+						demoText.find('.demo-reload').on('click', function() {
+							uploadInst.upload();
+						});
+					}
+				});
+			});
+		</script>
+	</body>
+	<script>
+		var my = {};
+		my.save = function() {
+			var req = {};
+			req.flag = $("input[name='flag']").val();
+			req.title = $("input[name='title']").val();
+			req.content = $("textarea[name='content']").val();
+			req.typeId = $("input[name='typeId']").val();
+			req.flag = $("input[name='flag']").val();
+			req.tagId = $("input[name='tagId']").val();
+			req.recommand = $("#recommand").prop('checked') ? 1 : 0;
+			req.shareInfo = $("#shareInfo").prop('checked') ? 1 : 0;
+			req.appreciation = $("#appreciation").prop('checked') ? 1 : 0;
+			req.comment = $("#comment").prop('checked') ? 1 : 0;
+			req.photoId = $("#photoId").html();
+			req.description = $("textarea[name='description']").val();
+
+			Af.rest('[[@{/boke/admin/savaBlogs.do}]]', req, function(data) {
+				alert('保存成功');
+				location.href = '[[@{/boke/admin/blogs}]]';
+			})
+		}
+
+		my.Published = function() {
+			var req = {};
+			req.flag = $("input[name='flag']").val();
+			req.title = $("input[name='title']").val();
+			req.content = $("textarea[name='content']").val();
+			req.typeId = $("input[name='typeId']").val();
+			req.flag = $("input[name='flag']").val();
+			req.tagId = $("input[name='tagId']").val();
+			req.recommand = $("#recommand").prop('checked') ? 1 : 0;
+			req.shareInfo = $("#shareInfo").prop('checked') ? 1 : 0;
+			req.appreciation = $("#appreciation").prop('checked') ? 1 : 0;
+			req.comment = $("#comment").prop('checked') ? 1 : 0;
+			req.photoId = $("#photoId").html();
+			req.description = $("textarea[name='description']").val();
+
+			Af.rest('[[@{/boke/admin/publishedBlogs.do}]]', req, function(data) {
+				alert('保存成功');
+				location.href = '[[@{/boke/admin/blogs}]]';
+			})
+		}
+	</script>
+</html>

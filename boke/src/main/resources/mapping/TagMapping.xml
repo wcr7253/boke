@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.example.boke.Dao.TagMapper">
+ 
+	<insert id="saveTag" useGeneratedKeys="true" keyProperty="id"  parameterType="hashmap" >
+		INSERT INTO `tag`
+        (`name`) 
+ 		 VALUES( #{name}) 
+	</insert>
+	
+	<select id="listTags" parameterType="hashmap"  resultType="com.example.boke.entity.Tag">
+		SELECT * FROM `tag` ORDER BY id LIMIT #{startIndex},#{pageSize}
+	</select>
+	
+	<update id="updataTag" parameterType="hashmap" >
+		UPDATE `tag` SET name =#{name} WHERE id = #{id}
+	</update>
+	
+	<delete id="delTag">
+ 		DELETE  FROM `tag` where id = #{id}
+ 	</delete>
+</mapper>

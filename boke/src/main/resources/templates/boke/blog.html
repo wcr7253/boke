@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.8">
+		<title>博客详情</title>
+		<script th:src="@{/js/jquery.min.js}"></script>
+		<script th:src="@{/js/afquery.js}"></script>
+		<link rel="stylesheet" th:href="@{/css/common.css}" media="all">
+		<link rel="stylesheet" th:href="@{/css/typo.css}" media="all">
+		<link rel="stylesheet" th:href="@{/css/animate.min.css}" media="all">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+
+	</head>
+	<body>
+		<!--导航-->
+		<nav class="ui inverted attached segment m-padded-tb-min">
+			<div class="ui container">
+				<div class="ui inverted secondary stackable menu">
+					<h2 class="ui teal header item">Blog</h2>
+					<a th:href='@{/boke/user/index}' class="active m-item item m-mobile-hide "><i class="home icon "></i>首页</a>
+					<a th:href='@{/boke/user/type}' class="m-item item m-mobile-hide"><i class="idea icon"></i>分类</a>
+					<a th:href='@{/boke/user/tag}' class="m-item item m-mobile-hide"><i class="tags icon"></i>标签</a>
+					<a th:href='@{/boke/user/archives}' class="m-item item m-mobile-hide"><i class="clone icon"></i>归档</a>
+					<a th:href='@{/boke/user/about}' class="m-item item m-mobile-hide"><i class="info icon"></i>关于我</a>
+					<div class="right m-item item m-mobile-hide">
+						<div class="ui icon inverted transparent input">
+							<input name="searchName" type="text" placeholder="Search..." />
+							<i class="search link icon" onclick='my.searchBlog()'></i>
+						</div>
+					</div>
+				</div>
+			</div>
+			<a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+				<i class="sidebar icon"></i>
+			</a>
+		</nav>
+		<!--中间内容-->
+		<div class="m-container-small m-padded-tb-big animate__pulse">
+			<div class="ui container">
+				<div class="ui top attached segment">
+					<div class="ui horizontal link list">
+						<div class="item">
+							<img th:src="@{/image/tou.png}" alt="" class="ui avatar image">
+							<div class="content"><a href="#" class="header" th:text=" ${Creator}">秦泽爽</a></div>
+						</div>
+						<div class="item">
+							<i class="calendar icon"></i><span th:text=" ${updataTime}">2020-5-27</span>
+						</div>
+						<div class="item">
+							<i class="eye icon"></i><span th:text=" ${views}">2000</span>
+						</div>
+					</div>
+				</div>
+				<div class="ui attached segment">
+					<!--图片-->
+					<img th:src="@{/photo/view(blogId=${blogId})}" alt="" class="ui fluid rounded image">
+				</div>
+				<div class="ui  attached padded segment">
+					<!--内容-->
+					<div class="ui right aligned basic segment">
+						<div class="ui orange basic label" th:text=" ${flag}">原创</div>
+					</div>
+					<h2 class="ui center aligned header" th:text=" ${title}">
+						题目
+					</h2>
+					<div id="content" class="typo typo-selection m-padded-lr-reponsive m-padded-tb-large" th:utext=" ${content}">
+						内容
+					</div>
+					<!--标签-->
+					<div class="m-padded-lr-reponsive">
+						<div class="ui basic teal left pointing label" th:each=" row:${listTags}" th:text=" ${row.name}">方法论</div>
+					</div>
+					<!--打赏-->
+					<div class="ui center aligned basic segment">
+						<button th:if="${isAppreciation == 1}" id="payButton" type="button" class="ui orange basic circular button">打赏</button>
+					</div>
+					<div class="ui payQR flowing popup transition hidden">
+						<div class="ui orange basic label">
+							<div class="ui images" style="font-size: inherit !important;">
+								<div class="image">
+									<img th:src="@{/image/weipay.PNG}" alt="" class="ui rounded bordered image" style="width: 120px;">
+									<div>微信</div>
+								</div>
+								<div class="image">
+									<img th:src="@{/image/baopay.JPG}" alt="" class="ui rounded bordered image" style="width: 120px;">
+									<div>支付宝也不是不可以</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ui attached positive message">
+					<!--博客信息-->
+					<div class="ui middle aligned grid">
+						<div class="eleven wide column">
+							<ui>
+								<li>作者：[[${Creator}]]</li>
+								<li>发表时间：<span th:text=" ${updataTime}">2020-5-27</span></li>
+							</ui>
+						</div>
+						<div class="five wide column">
+							<img th:src="@{/image/weiChat.JPG}" class="ui right floated rounded bordered image" style="width: 100px !important;">
+						</div>
+					</div>
+				</div>
+				<div class="ui bottom attached segment">
+					<!--留言区域列表-->
+					<div id="comment-container" class="ui teal segment">
+						<div >
+							<div class="ui threaded comments" style="max-width: 100%;">
+								<h3 class="ui dividing header">评论区</h3>
+								<div class="comment" th:each=" row:${commentlist}">
+									<a class="avatar">
+										<img th:src="@{/image/tou.png}">
+									</a>
+									<div class="content">
+										<a class="author" >
+											<span th:text=" ${row.nickname}">Matt</span>
+											<div class="ui mini basic teal left pointing label m-padded-mini" th:if="${row.isAdmintor}==1">
+												博主
+											</div>
+										</a>
+										<div class="metadata">
+											<span class="date" th:text=" ${#dates.format(row.createTime)}" >Today at 5:42PM</span>
+										</div>
+										<div class="text" th:text=" ${row.content}">
+											How artistic!
+										</div>
+										<div class="actions">
+											<a class="reply" th:attr="data-commentid=${row.id},data-commentnickname=${row.nickname}" data-commentid='1' data-commentnickname='Matt' onclick="reply(this)">回复</a>
+										</div>
+									</div>
+									<div class="comments" th:if="${#arrays.length(row.replyList)}>0">
+										<div class="comment"  th:each=" row1 : ${row.replyList}">
+											<a class="avatar">
+												<img th:src="@{/image/tou.png}">
+											</a>
+											<div class="content">
+												<a class="author" >
+													<span th:text=" ${row1.nickname}">小红 </span>
+													<div class="ui mini basic teal left pointing label m-padded-mini" th:if="${row1.isAdmintor}==1"> 
+														博主
+													</div>
+													<span th:text=" |@ ${row1.parentnickname}|" class="m-teal"> 小白</span>
+												</a>
+												<div class="metadata">
+													<span class="date" th:text=" ${#dates.format(row1.createTime)}"></span>
+												</div>
+												<div class="text" th:text=" ${row1.content}">
+													zzaini
+												</div>
+												<div class="actions">
+													<a class="reply" th:attr="data-commentid=${row1.id},data-commentnickname=${row1.nickname}" data-commentid='1' data-commentnickname='Matt' onclick="reply(this)">回复</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--留言回复区域-->
+						<div id="comment-form" class="ui form">
+							<input type="hidden" name="blogId" th:value="${blogId}" />
+							<input type="hidden" name="parentComment.id" value="-1" />
+							<div class="field">
+								<textarea name="content" placeholder="请输入评论信息..."></textarea>
+							</div>
+							<div class="fields">
+								<div class="field m-mobile-wide m-margin-bottom-small">
+									<div class="ui icon input">
+										<i class="user left icon"></i>
+										<input type="text" name="nickname" placeholder="昵称" />
+									</div>
+								</div>
+								<div class="field m-mobile-wide m-margin-bottom-small">
+									<div class="ui icon input">
+										<i class="mail left icon"></i>
+										<input type="text" name="email" placeholder="邮箱" />
+									</div>
+								</div>
+								<div class="field m-mobile-wide m-margin-bottom-small">
+									<button id="commentpost-btn" type="button" class="ui teal button m-mobile-wide"><i class="edit icon"></i>发布</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+			<script>
+				$('.menu.toggle').click(function() {
+					$('.m-item').toggleClass('m-mobile-hide');
+				});
+
+				$('#payButton').popup({
+					popup: $('.payQR.popup'),
+					on: 'click',
+					position: 'bottom center'
+				});
+
+				//表单验证
+				$(".ui.form").form({
+					fields: {
+						title: {
+							identifier: 'content',
+							rules: [{
+								type: 'empty',
+								prompt: '请输入评论内容'
+							}]
+						},
+						content: {
+							identifier: 'nickname',
+							rules: [{
+								type: 'empty',
+								prompt: '请输入你的小名'
+							}]
+						},
+						type: {
+							identifier: 'email',
+							rules: [{
+								type: 'email',
+								prompt: '请填写正确的邮箱地址'
+							}]
+						}
+					}
+				});
+
+				$('#commentpost-btn').click(function() {
+					var boo = $('.ui.form').form('validate form');
+					if (boo) {
+						console.log('校验成功');
+						postDate();
+					} else {
+						console.log('校验失败');
+					}
+				});
+
+				function postDate() {
+					var req = {};
+					req.content = $("textarea[name='content']").val();
+					req.nickname = $("input[name='nickname']").val();
+					req.email = $("input[name='email']").val();
+					req.commentId = $("input[name='parentComment.id']").val();
+					req.blogId = $("input[name='blogId']").val();
+					Af.rest('[[@{/boke/comment/savecomment.do}]]', req, function(data) {
+						alert('发表成功');
+						location.href = '[[@{/boke/user/blog}]]' + '?blogId=' + [[${blogId}]];
+					});
+				}
+
+				function reply(obj) {
+					var commentId = $(obj).data('commentid');
+					var commentNickname = $(obj).data('commentnickname');
+					$("[name='content']").attr("placeholder", "@" + commentNickname).focus();
+					$("[name='parentComment.id']").val(commentId);
+					$(window).scrollTo($('#comment-form'), 500);
+				}
+			</script>
+	</body>
+	<script>
+		var my = {};
+
+		my.searchBlog = function() {
+			var req = {};
+			var blogName = $("input[name='searchName']").val();
+			//window.location.href = '[[@{/boke/user/search}]]' + '?blogName=' + blogName ;    
+			window.open('[[@{/boke/user/search}]]' + '?blogName=' + blogName);
+		}
+	</script>
+
+</html>

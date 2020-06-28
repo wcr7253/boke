@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: dev
+  devtools:
+    restart: 
+     exclude: static / **，public / **  
+
+  

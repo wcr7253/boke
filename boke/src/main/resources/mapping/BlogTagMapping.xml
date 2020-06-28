@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.example.boke.Dao.BlogTagMapper">
+ 
+	<insert id="saveBlogTag"   parameterType="hashmap" >
+		  INSERT INTO `blog_tag`
+        	(`blogId`, `tagId`) 
+  			VALUES(#{blogId}, #{tagId}) 
+	</insert>
+	
+	<select id="listTag"  resultType="com.example.boke.entity.BlogTag">
+		SELECT * FROM `blog_tag` where tagId=#{tagId} 
+	</select>
+	
+	<select id="listTagByBlogId"  resultType="com.example.boke.entity.BlogTag">
+		SELECT * FROM `blog_tag` where blogId=#{blogId} 
+	</select>
+</mapper>
