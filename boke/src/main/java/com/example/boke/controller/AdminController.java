@@ -183,25 +183,9 @@ public class AdminController
 		}
 		
 		//最新少博客列表
-		try
-		{
-			String s1 = "SELECT title,id FROM `blog`  where isPublished = 1  ORDER BY updataTime DESC LIMIT 0,3";
-			List<String[]> newBlog = AfSimpleDB.query(s1);
-			List<HashMap<String, Object>> newSmallBlogList = new ArrayList<>();
-			for (String[] s : newBlog)
-			{
-				HashMap<String, Object> m = new HashMap<String, Object>();
-				m.put("title", s[0]);
-				m.put("id", s[1]);
-				newSmallBlogList.add(m);
-			}
-			model.addAttribute("newSmallBlogList", newSmallBlogList);
-		} catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-				
+		List<HashMap<String, Object>> newSmallBlogList=BlogImpl.newSmallBlogList();
+		model.addAttribute("newSmallBlogList", newSmallBlogList);
+		
 		return "boke/admin/blogs";
 	}
 	
@@ -253,24 +237,8 @@ public class AdminController
 			
 
 			//最新少博客列表
-			try
-			{
-				String s1 = "SELECT title,id FROM `blog`  where isPublished = 1  ORDER BY updataTime DESC LIMIT 0,3";
-				List<String[]> newBlog = AfSimpleDB.query(s1);
-				List<HashMap<String, Object>> newSmallBlogList = new ArrayList<>();
-				for (String[] s : newBlog)
-				{
-					HashMap<String, Object> m = new HashMap<String, Object>();
-					m.put("title", s[0]);
-					m.put("id", s[1]);
-					newSmallBlogList.add(m);
-				}
-				model.addAttribute("newSmallBlogList", newSmallBlogList);
-			} catch (Exception e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			List<HashMap<String, Object>> newSmallBlogList=BlogImpl.newSmallBlogList();
+			model.addAttribute("newSmallBlogList", newSmallBlogList);
 			
 			return "boke/admin/blogs-input-edit";
 		}
@@ -307,24 +275,9 @@ public class AdminController
 		
 
 		//最新少博客列表
-		try
-		{
-			String s1 = "SELECT title,id FROM `blog`  where isPublished = 1  ORDER BY updataTime DESC LIMIT 0,3";
-			List<String[]> newBlog = AfSimpleDB.query(s1);
-			List<HashMap<String, Object>> newSmallBlogList = new ArrayList<>();
-			for (String[] s : newBlog)
-			{
-				HashMap<String, Object> m = new HashMap<String, Object>();
-				m.put("title", s[0]);
-				m.put("id", s[1]);
-				newSmallBlogList.add(m);
-			}
-			model.addAttribute("newSmallBlogList", newSmallBlogList);
-		} catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		List<HashMap<String, Object>> newSmallBlogList=BlogImpl.newSmallBlogList();
+		model.addAttribute("newSmallBlogList", newSmallBlogList);
+		
 		return "boke/admin/blogs-input";
 	}
 	
@@ -502,24 +455,8 @@ public class AdminController
 		
 
 		//最新少博客列表
-		try
-		{
-			String s1 = "SELECT title,id FROM `blog`  where isPublished = 1  ORDER BY updataTime DESC LIMIT 0,3";
-			List<String[]> newBlog = AfSimpleDB.query(s1);
-			List<HashMap<String, Object>> newSmallBlogList = new ArrayList<>();
-			for (String[] s : newBlog)
-			{
-				HashMap<String, Object> m = new HashMap<String, Object>();
-				m.put("title", s[0]);
-				m.put("id", s[1]);
-				newSmallBlogList.add(m);
-			}
-			model.addAttribute("newSmallBlogList", newSmallBlogList);
-		} catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		List<HashMap<String, Object>> newSmallBlogList=BlogImpl.newSmallBlogList();
+		model.addAttribute("newSmallBlogList", newSmallBlogList);
 		
 		return "boke/admin/types";
 	}
@@ -529,24 +466,8 @@ public class AdminController
 	{
 
 		//最新少博客列表
-		try
-		{
-			String s1 = "SELECT title,id  FROM `blog`  where isPublished = 1  ORDER BY updataTime DESC LIMIT 0,3";
-			List<String[]> newBlog = AfSimpleDB.query(s1);
-			List<HashMap<String, Object>> newSmallBlogList = new ArrayList<>();
-			for (String[] s : newBlog)
-			{
-				HashMap<String, Object> m = new HashMap<String, Object>();
-				m.put("title", s[0]);
-				m.put("id", s[1]);
-				newSmallBlogList.add(m);
-			}
-			model.addAttribute("newSmallBlogList", newSmallBlogList);
-		} catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		List<HashMap<String, Object>> newSmallBlogList=BlogImpl.newSmallBlogList();
+		model.addAttribute("newSmallBlogList", newSmallBlogList);
 		
 		return "boke/admin/types-input";
 	}
@@ -635,24 +556,8 @@ public class AdminController
 		
 
 		//最新少博客列表
-		try
-		{
-			String s1 = "SELECT title,id FROM `blog`  where isPublished = 1  ORDER BY updataTime DESC LIMIT 0,3";
-			List<String[]> newBlog = AfSimpleDB.query(s1);
-			List<HashMap<String, Object>> newSmallBlogList = new ArrayList<>();
-			for (String[] s : newBlog)
-			{
-				HashMap<String, Object> m = new HashMap<String, Object>();
-				m.put("title", s[0]);
-				m.put("id", s[1]);
-				newSmallBlogList.add(m);
-			}
-			model.addAttribute("newSmallBlogList", newSmallBlogList);
-		} catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		List<HashMap<String, Object>> newSmallBlogList=BlogImpl.newSmallBlogList();
+		model.addAttribute("newSmallBlogList", newSmallBlogList);
 		
 		return "boke/admin/tags";
 	}
@@ -663,24 +568,9 @@ public class AdminController
 	{
 
 		//最新少博客列表
-		try
-		{
-			String s1 = "SELECT title,id  FROM `blog`  where isPublished = 1  ORDER BY updataTime DESC LIMIT 0,3";
-			List<String[]> newBlog = AfSimpleDB.query(s1);
-			List<HashMap<String, Object>> newSmallBlogList = new ArrayList<>();
-			for (String[] s : newBlog)
-			{
-				HashMap<String, Object> m = new HashMap<String, Object>();
-				m.put("title", s[0]);
-				m.put("id", s[1]);
-				newSmallBlogList.add(m);
-			}
-			model.addAttribute("newSmallBlogList", newSmallBlogList);
-		} catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		List<HashMap<String, Object>> newSmallBlogList=BlogImpl.newSmallBlogList();
+		model.addAttribute("newSmallBlogList", newSmallBlogList);
+		
 		return "boke/admin/tags-input";
 	}	
 	

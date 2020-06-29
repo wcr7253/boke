@@ -16,6 +16,8 @@ import com.example.boke.Dao.BlogMapper;
 import com.example.boke.entity.Blog;
 import com.example.boke.entity.User;
 import com.example.boke.service.BlogService;
+
+import af.sql.c3p0.AfSimpleDB;
 @Service
 
 public class BlogServiceImpl implements BlogService
@@ -132,6 +134,33 @@ public class BlogServiceImpl implements BlogService
 		}
 		
 		return listBlogs;
+	}
+
+
+	@Override
+	public List<HashMap<String, Object>> newSmallBlogList()
+	{
+		try
+		{
+			String s1 = "SELECT title,id FROM `blog`  where isPublished = 1  ORDER BY updataTime DESC LIMIT 0,3";
+			List<String[]> newBlog = AfSimpleDB.query(s1);
+			List<HashMap<String, Object>> newSmallBlogList = new ArrayList<>();
+			for (String[] s : newBlog)
+			{
+				HashMap<String, Object> m = new HashMap<String, Object>();
+				m.put("title", s[0]);
+				m.put("id", s[1]);
+				newSmallBlogList.add(m);
+			}
+			return newSmallBlogList;
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+		
 	}
 
 

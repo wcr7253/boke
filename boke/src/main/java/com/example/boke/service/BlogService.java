@@ -17,4 +17,5 @@ public interface BlogService {
 	  Blog getBlogsForP(int blogId);
 	  int delBlog(int id);
 	  List<Blog> listType(int typeId);
+	  List<HashMap<String, Object>> newSmallBlogList();
 }

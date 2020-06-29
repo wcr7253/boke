@@ -27,6 +27,9 @@ public class ArchivesController
 	@Autowired
 	RedisTemplate redisTemplate;
 	
+	@Autowired
+	BlogServiceImpl BlogImpl;
+	
 	@GetMapping("/archives")
 	public String archives(Model model) throws Exception
 	{
@@ -79,16 +82,7 @@ public class ArchivesController
 		
 		
 		// 最新少博客列表
-		String s1 = "SELECT title,id  FROM `blog`  where isPublished = 1  ORDER BY updataTime DESC LIMIT 0,3";
-		List<String[]> newBlog = AfSimpleDB.query(s1);
-		List<HashMap<String, Object>> newSmallBlogList = new ArrayList<>();
-		for (String[] s : newBlog)
-		{
-			HashMap<String, Object> m = new HashMap<String, Object>();
-			m.put("title", s[0]);
-			m.put("id", s[1]);
-			newSmallBlogList.add(m);
-		}
+		List<HashMap<String, Object>> newSmallBlogList=BlogImpl.newSmallBlogList();
 		model.addAttribute("newSmallBlogList", newSmallBlogList);
 	
 		return "boke/archives";
