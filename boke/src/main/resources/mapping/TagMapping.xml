@@ -11,8 +11,8 @@
  		 VALUES( #{name}) 
 	</insert>
 	
-	<select id="listTags" parameterType="hashmap"  resultType="com.example.boke.entity.Tag">
-		SELECT * FROM `tag` ORDER BY id LIMIT #{startIndex},#{pageSize}
+	<select id="listTags"   resultType="com.example.boke.entity.Tag">
+		SELECT * FROM `tag` ORDER BY id 
 	</select>
 	
 	<update id="updataTag" parameterType="hashmap" >

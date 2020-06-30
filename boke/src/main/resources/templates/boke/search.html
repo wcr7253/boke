@@ -23,8 +23,8 @@
 					<a th:href='@{/boke/user/about}' class="m-item item m-mobile-hide"><i class="info icon"></i>关于我</a>
 					<div class="right m-item item m-mobile-hide">
 						<div class="ui icon inverted transparent input">
-							<input type="text" th:placeholder=" ${blogName}" placeholder="Search..."/>
-							<i class="search link icon"></i>
+							<input name="searchName" type="text" th:placeholder=" ${blogName}" placeholder="Search..."/>
+							<i class="search link icon" onclick='my.searchBlog()'></i>
 						</div>
 					</div>
 				</div>
@@ -165,6 +165,19 @@
 			$('.menu.toggle').click(function() {
 				$('.m-item').toggleClass('m-mobile-hide');
 			});
+			
+		
+		
 		</script>
 	</body>
+	<script >
+		var my = {};
+		
+		my.searchBlog = function() {
+			var req = {};
+			var blogName = $("input[name='searchName']").val();
+			//window.location.href = '[[@{/boke/user/search}]]' + '?blogName=' + blogName ;    
+			 window.open('[[@{/boke/user/search}]]' + '?blogName=' + blogName);
+		}
+	</script>
 </html>

@@ -19,7 +19,6 @@
 		<if test="typeId != null" >
 		    AND typeId = #{typeId}
 		</if>
-		LIMIT #{startIndex},#{pageSize}
 	</select>
 	
 	<insert id="saveblogs" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.boke.entity.Blog" >

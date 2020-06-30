@@ -51,27 +51,25 @@ public class BlogController
 	CommentServiceImpl CmtImpl;
 	
 	@GetMapping("/index")
-	public String index(Model model, Integer pageNumber, Integer blogSize, Integer method)
+	public String index(Model model, Integer pageNumber,  Integer method)
 	{
 		// 博客列表
 		int i = 0;
 		// 如果参数为null，则取默认值
 		if (pageNumber == null)
 			pageNumber = 1;
-		else if (blogSize == 5 && method == 1)
+		else if (pageNumber != null && method == 1)
 			pageNumber += 1;
-		else if (method == -1 && pageNumber > 1)
+		else if (method == -1 && pageNumber != null)
 			pageNumber -= 1;
 
-		int pageSize = 5;
-		int startIndex = pageSize * (pageNumber - 1);
+		int pageSize = 4;
 
 		// 查询
-		List<HashMap<String, Object>> listBlogs = (List<HashMap<String, Object>>) BlogImpl.listBlog(startIndex,pageSize,null,1,null,1);
+		List<HashMap<String, Object>> listBlogs = (List<HashMap<String, Object>>) BlogImpl.listBlog(pageNumber,pageSize,null,1,null,1);
 		
 		model.addAttribute("listBlogs", listBlogs);
 		model.addAttribute("pageNumber", pageNumber);
-		model.addAttribute("blogSize", listBlogs.size());
 
 		try
 		{
@@ -154,11 +152,21 @@ public class BlogController
 	}
 
 	@GetMapping("/search")
-	public String search(Model model, String blogName)
+	public String search(Model model, String blogName,Integer pageNumber,  Integer method)
 	{
 		int i = 0;
+		// 如果参数为null，则取默认值
+		if (pageNumber == null)
+			pageNumber = 1;
+		else if (pageNumber != null && method == 1)
+			pageNumber += 1;
+		else if (method == -1 && pageNumber != null)
+			pageNumber -= 1;
+
+		int pageSize = 5;
+		
 		// 查询
-		List<HashMap<String, Object>> listBlogs = (List<HashMap<String, Object>>) BlogImpl.listBlog(0,1000,blogName,1,null,1);
+		List<HashMap<String, Object>> listBlogs = (List<HashMap<String, Object>>) BlogImpl.listBlog(pageNumber,pageSize,blogName,1,null,1);
 
 		model.addAttribute("listBlogs", listBlogs);
 		model.addAttribute("BlogCount", listBlogs.size());

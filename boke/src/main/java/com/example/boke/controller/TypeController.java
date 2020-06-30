@@ -37,19 +37,18 @@ public class TypeController
 	BlogServiceImpl BlogImpl;
 	
 	@GetMapping("/type")
-	public String type(Model model,Integer typeId, Integer pageNumber, Integer blogSize, Integer method)
+	public String type(Model model,Integer typeId, Integer pageNumber,  Integer method)
 	{
 		
 		// 如果参数为null，则取默认值
 		if (pageNumber == null)
 			pageNumber = 1;
-		else if (blogSize == 5 && method == 1)
+		else if (pageNumber != null && method == 1)
 			pageNumber += 1;
-		else if (method == -1 && pageNumber > 1)
+		else if (method == -1 && pageNumber != null)
 			pageNumber -= 1;
 
-		int pageSize = 5;
-		int startIndex = pageSize * (pageNumber - 1);
+		int pageSize = 3;
 				
 		// 如果参数为null，则取默认值
 		if (typeId == null)
@@ -68,7 +67,7 @@ public class TypeController
 		
 		//博客列表listBlog
 	
-		List<Blog> listblog= (List<Blog>) BlogImpl.listBlog(startIndex,pageSize,null,1,typeId,0);
+		List<Blog> listblog= (List<Blog>) BlogImpl.listBlog(pageNumber,pageSize,null,1,typeId,0);
 		List<Blog> listBlog=new ArrayList<Blog>();
 		for(Blog g : listblog)
 		{

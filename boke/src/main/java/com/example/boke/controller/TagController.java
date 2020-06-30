@@ -50,14 +50,14 @@ public class TagController
 		// 如果参数为null，则取默认值
 		if (pageNumber == null)
 			pageNumber = 1;
-		else if (blogSize == 5 && method == 1)
+		else if (blogSize == 3 && method == 1)
 			pageNumber += 1;
 		else if (method == -1 && pageNumber > 1)
 			pageNumber -= 1;
 
-		int pageSize = 5;
+		int pageSize = 3;
 		int startIndex = pageSize * (pageNumber - 1);
-		int endIndex=startIndex+pageSize;		
+		int endIndex=startIndex+pageSize;	
 				
 		// 如果参数为null，则取默认值
 		if (tagId == null)

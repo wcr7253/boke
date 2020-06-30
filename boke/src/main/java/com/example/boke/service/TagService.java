@@ -11,7 +11,7 @@ import com.example.boke.entity.Tag;
 public interface TagService {
 		 
 	  int saveTag(HashMap<String, Object> map);
-	  List<Tag> listTags(Integer startIndex, Integer pageSize);
+	  List<Tag> listTags(Integer pageNumber,Integer pageSize);
 	  int updataTag(HashMap<String, Object> map);
 	  int delTag(int id);
 }

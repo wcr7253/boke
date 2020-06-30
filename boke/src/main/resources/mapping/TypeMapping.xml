@@ -11,8 +11,8 @@
  		 VALUES( #{name}) 
 	</insert>
 	
-	<select id="listTypes" parameterType="hashmap"  resultType="com.example.boke.entity.Type">
-		SELECT * FROM `type` ORDER BY id LIMIT #{startIndex},#{pageSize}
+	<select id="listTypes"   resultType="com.example.boke.entity.Type">
+		SELECT * FROM `type` ORDER BY id 
 	</select>
 	
 	<select id="getTypesByid"  resultType="com.example.boke.entity.Type">

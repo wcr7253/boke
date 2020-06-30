@@ -12,7 +12,7 @@ import com.example.boke.entity.User;
 public interface TypeService {
 		 
 	  int saveType(HashMap<String, Object> map);
-	  List<Type> listTypes(Integer startIndex,Integer pageSize);
+	  List<Type> listTypes(Integer pageNumber,Integer pageSize);
 	  int updataType(HashMap<String, Object> map);
 	  int delType(int id);
 	  Type getTypesByid(int id);

@@ -16,6 +16,8 @@ import com.example.boke.Dao.BlogMapper;
 import com.example.boke.entity.Blog;
 import com.example.boke.entity.User;
 import com.example.boke.service.BlogService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 import af.sql.c3p0.AfSimpleDB;
 @Service
@@ -33,12 +35,22 @@ public class BlogServiceImpl implements BlogService
 	RedisTemplate redisTemplate;
 
 	@Override
-	public List<HashMap<String, Object>> listBlogs(HashMap<String, Object> map)
+	public List<HashMap<String, Object>> listBlogs(HashMap<String, Object> map,Integer pageNumber,Integer blogSize)
 	{
+		System.out.println("当前页是："+pageNumber+"显示条数是："+blogSize);
+		
 		Map typesmap = redisTemplate.opsForHash().entries("TypeList");	
 		
-		List<Blog> blogslist=Blog.listBlogs(map);
+		 //1.引入分页插件,pageNum是第几页，pageSize是每页显示多少条,默认查询总数count
+        PageHelper.startPage(pageNumber,blogSize);
+        
+		List<Blog> blogList=Blog.listBlogs(map);
 		
+		  //3.使用PageInfo包装查询后的结果,5是连续显示的条数,结果list类型是Page<E>
+        PageInfo<Blog> bloglist = new PageInfo<Blog>(blogList,blogSize);
+        
+        List<Blog> blogslist=bloglist.getList();
+        
 		Iterator<Blog> iter=blogslist.iterator();
 		List<HashMap<String, Object>> blogsList=new ArrayList<HashMap<String, Object>>();
 		while(iter.hasNext())
@@ -96,23 +108,26 @@ public class BlogServiceImpl implements BlogService
 	}
 	
 	@Override
-	public Object listBlog(Integer startIndex,Integer pageSize, String blogName,Integer isPublished,Integer typeId,Integer T)
+	public Object listBlog(Integer pageNumber,Integer pageSize, String blogName,Integer isPublished,Integer typeId,Integer T)
 	{
 		HashMap<String, Object> map=new HashMap<String, Object>();
 		if(blogName != null)
 			map.put("titleForSearch",blogName);
 		if(typeId != null)
 			map.put("typeId",typeId);
-		map.put("startIndex",startIndex);
-		map.put("pageSize",pageSize);
 		map.put("isPublished",isPublished);
+			
+		 //1.引入分页插件,pageNum是第几页，pageSize是每页显示多少条,默认查询总数count
+        PageHelper.startPage(pageNumber,pageSize);
+        
+		List<Blog> listb=Blog.listBlogs(map);
 		
-		if(T==0)
-			return Blog.listBlogs(map);
-		
-		List<Blog> listB=Blog.listBlogs(map);
-		
-		
+		//3.使用PageInfo包装查询后的结果,5是连续显示的条数,结果list类型是Page<E>
+        PageInfo<Blog> Bloglist = new PageInfo<Blog>(listb,pageSize);
+        
+        if(T == 0)
+        	return Bloglist.getList();
+        List<Blog> listB=Bloglist.getList();
 		List<HashMap<String, Object>> listBlogs = new ArrayList<>();
 		for (int i = 0; i < listB.size(); i++)
 		{

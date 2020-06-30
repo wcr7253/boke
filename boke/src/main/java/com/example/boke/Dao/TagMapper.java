@@ -11,7 +11,7 @@ import com.example.boke.entity.Tag;
 public interface TagMapper {
 		 
 	  int saveTag(HashMap<String, Object> map);
-	  List<Tag> listTags(HashMap<String, Object> map);
+	  List<Tag> listTags();
 	  int updataTag(HashMap<String, Object> map);
 	  int delTag(int id);
 }

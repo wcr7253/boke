@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.boke.Dao.TagMapper;
 import com.example.boke.service.TagService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 @Service
 public class TagServiceImpl implements TagService
@@ -22,13 +24,18 @@ public class TagServiceImpl implements TagService
 	}
 
 	@Override
-	public List<com.example.boke.entity.Tag> listTags(Integer startIndex,Integer pageSize)
+	public List<com.example.boke.entity.Tag> listTags(Integer pageNumber,Integer pageSize)
 	{
-		HashMap<String, Object> map=new HashMap<String, Object>();
-		map.put("startIndex", startIndex);
-		map.put("pageSize", pageSize);
+		 //1.引入分页插件,pageNum是第几页，pageSize是每页显示多少条,默认查询总数count
+        PageHelper.startPage(pageNumber,pageSize);
 		
-		return Tag.listTags(map);
+        List<com.example.boke.entity.Tag> TagList= Tag.listTags();
+        
+        //3.使用PageInfo包装查询后的结果,5是连续显示的条数,结果list类型是Page<E>
+        PageInfo<com.example.boke.entity.Tag> taglist = new PageInfo<com.example.boke.entity.Tag>(TagList,pageSize);
+        
+        
+		return taglist.getList();
 	}
 
 	@Override

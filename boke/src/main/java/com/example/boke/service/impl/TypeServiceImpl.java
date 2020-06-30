@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.boke.Dao.TypeMapper;
+import com.example.boke.entity.Blog;
 import com.example.boke.service.TypeService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 @Service
 public class TypeServiceImpl implements TypeService
@@ -37,13 +40,17 @@ public class TypeServiceImpl implements TypeService
 	}
 
 	@Override
-	public List<com.example.boke.entity.Type> listTypes(Integer startIndex,Integer pageSize)
+	public List<com.example.boke.entity.Type> listTypes(Integer pageNumber,Integer pageSize)
 	{
-		HashMap<String ,Object> typemap=new HashMap<String, Object>();
-		typemap.put("startIndex",startIndex);
-		typemap.put("pageSize",pageSize);
-		
-		return Type.listTypes(typemap);
+	   //1.引入分页插件,pageNum是第几页，pageSize是每页显示多少条,默认查询总数count
+        PageHelper.startPage(pageNumber,pageSize);
+        
+        List<com.example.boke.entity.Type> TypeList= Type.listTypes();
+        
+        //3.使用PageInfo包装查询后的结果,5是连续显示的条数,结果list类型是Page<E>
+        PageInfo<com.example.boke.entity.Type> typelist = new PageInfo<com.example.boke.entity.Type>(TypeList,pageSize);
+        
+		return typelist.getList();
 	}
 
 	@Override

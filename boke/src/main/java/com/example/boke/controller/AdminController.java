@@ -120,24 +120,21 @@ public class AdminController
 	//博客管理
 	@GetMapping("/blogs")
 	public String blogs(Model model,String titleForSearch,String typeId
-							,Integer pageNumber,Integer blogSize,Integer method)
+							,Integer pageNumber,Integer method)
 	{	
 		
 		// 如果参数为null，则取默认值
 		if (pageNumber == null)
 			pageNumber = 1;
-		else if(blogSize==10 && method==1)
-			pageNumber+=1;
-		else if(method==-1 && pageNumber>1)
-			pageNumber-=1;
-		
+		else if(pageNumber != null && method == 1)
+			pageNumber=pageNumber+1;
+		else if(pageNumber != null && method == -1)
+			pageNumber=pageNumber-1;
 		int pageSize = 10;
-		int startIndex = pageSize * (pageNumber - 1);
+
 		
 		// 查询
 		HashMap<String, Object> Searchmap=new HashMap<String, Object>();
-		Searchmap.put("startIndex", startIndex);
-		Searchmap.put("pageSize", pageSize);
 				
 		//获取全部分类
 		Map typesmap = redisTemplate.opsForHash().entries("TypeList");	
@@ -159,11 +156,10 @@ public class AdminController
 		//博客展现
 		if(titleForSearch==null && typeId==null )
 		{
-			List<HashMap<String, Object>> blogsList=BlogImpl.listBlogs(Searchmap);
+			List<HashMap<String, Object>> blogsList=BlogImpl.listBlogs(Searchmap,pageNumber,pageSize);
 
 			model.addAttribute("blogsList", blogsList);
 			model.addAttribute("pageNumber", pageNumber);
-			model.addAttribute("blogSize", blogsList.size());
 		}
 		else
 		{
@@ -176,7 +172,7 @@ public class AdminController
 			
 			Searchmap.put("titleForSearch",titleForSearch);
 
-			List<HashMap<String, Object>> blogsList=BlogImpl.listBlogs(Searchmap);
+			List<HashMap<String, Object>> blogsList=BlogImpl.listBlogs(Searchmap,pageNumber,pageSize);
 			
 			model.addAttribute("blogsList", blogsList);
 			model.addAttribute("titleForSearch", titleForSearch);
@@ -413,20 +409,19 @@ public class AdminController
 	//分类管理
 	
 	@GetMapping("/types")
-	public String types(Model model,Integer pageNumber,Integer typeSize,Integer method)
+	public String types(Model model,Integer pageNumber,Integer method)
 	{
 		// 如果参数为null，则取默认值
 		if (pageNumber == null)
 			pageNumber = 1;
-		else if(typeSize==10 && method==1)
+		else if(pageNumber != null && method==1)
 			pageNumber+=1;
-		else if(method==-1 && pageNumber>1)
+		else if(method==-1 && pageNumber != null)
 			pageNumber-=1;
 		
 		int pageSize = 10;
-		int startIndex = pageSize * (pageNumber - 1);
 		// 查询
-		List<Type> typesList=TypeImpl.listTypes(startIndex,pageSize);
+		List<Type> typesList=TypeImpl.listTypes(pageNumber,pageSize);
 		
 	    Set<Integer> keys = redisTemplate.opsForHash().keys("TypeList");
 	    Iterator<Integer>  iterator=keys.iterator();
@@ -438,7 +433,7 @@ public class AdminController
 		//分类遍历 把标签存到Redis
 		if(true)
 		{
-			List<Type> typeList=TypeImpl.listTypes(0,10000);
+			List<Type> typeList=TypeImpl.listTypes(1,100000);
 		
 			Iterator<Type> iter=typeList.iterator();
 			while(iter.hasNext())
@@ -451,7 +446,6 @@ public class AdminController
 		
 		model.addAttribute("typesList", typesList);
 		model.addAttribute("pageNumber", pageNumber);
-		model.addAttribute("typeSize", typesList.size());
 		
 
 		//最新少博客列表
@@ -513,21 +507,20 @@ public class AdminController
 	
 	
 	@GetMapping("/tags")
-	public String tags(Model model,Integer pageNumber,Integer tagSize,Integer method)
+	public String tags(Model model,Integer pageNumber,Integer method)
 	{
 		// 如果参数为null，则取默认值
 		if (pageNumber == null)
 			pageNumber = 1;
-		else if(tagSize==10 && method==1)
+		else if(pageNumber != null && method==1)
 			pageNumber+=1;
-		else if(method==-1 && pageNumber>1)
+		else if(method==-1 && pageNumber != null)
 			pageNumber-=1;
 		
 		int pageSize = 10;
-		int startIndex = pageSize * (pageNumber - 1);
+		
 		// 查询
-	
-		List<Tag> tagsList=TagImpl.listTags(startIndex,pageSize);
+		List<Tag> tagsList=TagImpl.listTags(pageNumber,pageSize);
 		
 	    Set<Integer> keys = redisTemplate.opsForHash().keys("TagList");
 	    Iterator<Integer>  iterator=keys.iterator();
